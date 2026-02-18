@@ -97,30 +97,16 @@ h1{
     margin-top:10px;
     color:#ffee33;
 }
-.clip-box {
-    margin-top: 6px;
-    padding: 6px 10px;
-    background: rgba(255,255,255,0.05);
-    border-left: 3px solid #ff4444;
-    border-radius: 6px;
-    font-size: 0.95rem;
-}
-
-.clip-box summary {
-    cursor: pointer;
-    color: #ffaaaa;
-    font-weight: 600;
-}
-
-.clip-box a {
-    display: block;
-    margin-top: 5px;
-    color: #ffffff;
+.boss-link{
     text-decoration: none;
+    color: inherit;
+    transition: 0.2s;
 }
 
-.clip-box a:hover {
+.boss-link:hover{
     color: #ff4444;
+    text-shadow: 0 0 8px crimson;
+    cursor: pointer;
 }
 </style>
 </head>
@@ -520,32 +506,24 @@ function createGame(gameKey){
     .sort((a,b)=> b.completed - a.completed)
     .forEach(boss=>{
 
-        const bossDiv = document.createElement("div");
-        bossDiv.className = "boss " + (boss.completed ? "done" : "notdone");
+        const div = document.createElement("div");
+        div.className = "boss " + (boss.completed ? "done" : "notdone");
 
-        bossDiv.innerText = (boss.completed ? "✔ " : "✖ ") + boss.name;
-        container.appendChild(bossDiv);
-
-        // Wenn ein Clip existiert → Clip-Box erstellen
+        // Wenn Clip existiert → klickbarer Link
         if(boss.clip){
-            const details = document.createElement("details");
-            details.className = "clip-box";
-
-            const summary = document.createElement("summary");
-            summary.innerText = "🎥 Clip anzeigen";
-
             const link = document.createElement("a");
             link.href = boss.clip;
             link.target = "_blank";
-            link.innerText = "▶ Boss-Kill ansehen";
-
-            details.appendChild(summary);
-            details.appendChild(link);
-
-            container.appendChild(details);
+            link.className = "boss-link";
+            link.innerText = (boss.completed ? "✔ " : "✖ ") + boss.name;
+            div.appendChild(link);
+        } else {
+            div.innerText = (boss.completed ? "✔ " : "✖ ") + boss.name;
         }
 
+        container.appendChild(div);
     });
+
 
     });
 
